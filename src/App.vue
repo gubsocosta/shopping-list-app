@@ -18,9 +18,12 @@
       Save Item
     </button>
   </form>
+  <p class="counter">
+    {{ charCount }}/200
+  </p>
   <ul>
     <li
-      v-for="(item, index) in items" 
+      v-for="(item, index) in reversedItems" 
       :key="item.id"
       @click="togglePurchased(item)"
       :class="{ 
@@ -38,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const header = ref('Shopping List App');
 const editing = ref(false);
@@ -62,10 +65,16 @@ const items = ref([
     highPriority: true
   }
 ]);
-
 const newItem = ref('');
-
 const newItemHighPriority = ref(false);
+
+const charCount = computed(() => {
+  return newItem.value.length;
+});
+
+const reversedItems=computed(() => {
+  return [...items.value.reverse()];
+});
 
 const saveItem = () => {
   items.value.push({
